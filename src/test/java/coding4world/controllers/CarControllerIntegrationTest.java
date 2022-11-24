@@ -1,6 +1,7 @@
 package coding4world.controllers;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static com.google.common.collect.Lists.newArrayList;
@@ -74,6 +75,7 @@ public class CarControllerIntegrationTest {
         Car carUpdated = new Car(1l, "Toyota", "Sedan", "Camry", 2019);
 
         when(carService.findById(id)).thenReturn(Optional.of(car));
+        when(carService.update(id, carUpdated)).thenReturn(Optional.of(carUpdated));
 
         mvc.perform(put("/api/cars/{id}", id)
         .contentType(MediaType.APPLICATION_JSON)
@@ -98,6 +100,8 @@ public class CarControllerIntegrationTest {
     @Test
     public void givenCars_whenPostCars_thenStatus201() throws Exception {
         Car newCar = new Car(1l, "Toyota", "Sedan", "Camry", 2018);
+
+        when(carService.store(newCar)).thenReturn(Optional.of(newCar));
 
         mvc.perform(post("/api/cars")
         .contentType(MediaType.APPLICATION_JSON)
